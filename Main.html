@@ -1,0 +1,2118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<link rel="stylesheet" href=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity=
+"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+		crossorigin="anonymous">
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity=
+"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous">
+	</script>
+	
+	<script src=
+"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity=
+"sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous">
+	</script>
+	
+	<script src=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity=
+"sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous">
+	</script>
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+	integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+	crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+	integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+	crossorigin=""></script>
+
+<script>
+	(function(document) {
+		'use strict';
+
+		var TableFilter = (function(myArray) {
+			var search_input;
+
+			function _onInputSearch(e) {
+				search_input = e.target;
+				var tables = document.getElementsByClassName(search_input.getAttribute('data-table'));
+				myArray.forEach.call(tables, function(table) {
+					myArray.forEach.call(table.tBodies, function(tbody) {
+						myArray.forEach.call(tbody.rows, function(row) {
+							var text_content = row.textContent.toLowerCase();
+							var search_val = search_input.value.toLowerCase();
+							row.style.display = text_content.indexOf(search_val) > -1 ? '' : 'none';
+						});
+					});
+				});
+			}
+
+			return {
+				init: function() {
+					var inputs = document.getElementsByClassName('search-input');
+					myArray.forEach.call(inputs, function(input) {
+						input.oninput = _onInputSearch;
+					});
+				}
+			};
+		})(Array.prototype);
+
+		document.addEventListener('readystatechange', function() {
+			if (document.readyState === 'complete') {
+				TableFilter.init();
+			}
+		});
+
+	})(document);
+</script>
+<style type="text/css">
+body {
+	margin:0px;
+	font-family:"Arial Rounded MT Bold", Arial, Helvetica, sans-serif
+}
+h3 span {
+	font-size: 22px;
+}
+h3 input.search-input {
+	width: 20px;
+	margin-left: auto;
+	float: right
+}
+
+
+.wrapper {
+	height: 500px;
+    width: 100%;
+	display: flex;
+	background-size: cover;
+	padding:20px;
+	position: relative;
+	z-index: 9999999999;
+}
+
+.box1 {
+	width:220px;
+	height:244px;
+	margin:5px;
+	padding:5px;
+	background-color: rgba(191, 191, 191, 0);
+	position: absolute;
+	right: 0px;
+	top: 50px;
+}
+
+.box3 {
+	width:332px;
+	height:181px;
+	margin:5px;
+	padding:5px;
+	background-color: rgba(138, 28, 28, 0);
+	position: relative;
+	z-index: 9999999999;
+	/* top: 50px; */
+	left: 10px;
+}
+
+.box3b {
+	width:332px;
+	height:342px;
+	margin:5px;
+	padding:5px;
+	background-color: rgba(138, 28, 28, 0);
+	position: absolute;
+	z-index: 9999999999;
+	left: 10px;
+	bottom: 20px;
+}
+
+.boxRoute {
+	width:420px;
+	height:250px;
+	background: #c00;
+	padding:5px 10px 5px 10px;
+	border-radius: 0px 0px 0px 0px;
+    background-color: rgba(191, 191, 191, 0.8);
+    color: rgb(0, 0, 0);
+	display:block;
+}
+.boxBEB {
+	width:350px;
+	height:320px;
+	background: #c00;
+	padding:5px 10px 5px 10px;
+	border-radius: 0px 0px 0px 0px;
+    background-color: rgba(191, 191, 191, 0.8);
+    color: rgb(0, 0, 0);
+	position: absolute;
+	display:block;
+}
+
+.boxCS {
+	width:350px;
+	float:right;
+	height:270px;
+	background: #c00;
+	padding:10px 5px 10px 5px;
+	border-radius: 0px 0px 0px 0px;
+    background-color: rgba(191, 191, 191, 0.8);
+    color: rgb(0, 0, 0);
+}
+
+.tableFixHead {
+        overflow-y: auto;
+        height: 195px;
+      }
+      .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        padding: 0.25rem;
+        border: 1px solid rgb(0, 0, 0);
+		text-align:center;
+      }
+	  th {
+        background: rgb(77, 77, 77);
+		color: #fff;
+      }
+
+.header {
+  overflow: hidden;
+  background-color: rgba(191, 191, 191, 0);
+  padding: 5px 5px;
+  z-index: 9999;
+  position: relative;
+}
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+  font-size: 16px; 
+  line-height: 20px;
+  border-radius: 5px;
+}
+.header a.logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.header a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.header a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.header-right {
+  float: right;
+  padding: 0px 10px;
+}
+
+div.right {float: right;}
+
+
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .header-right {
+    float: right !important;
+  }
+}
+p.ex1 {
+  font-size: 15px;	
+  margin: 0px;	
+  padding: 10px;
+}
+.slidecontainer {
+  width: 100%;
+  padding: 5px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: #808080;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #0423aa;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+
+a.a1.dropdown-item {	color: rgb(255, 248, 248) ;
+	border-style: solid;
+	border-radius: 5px;}
+
+
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid #444444;
+}
+
+div.round {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+p.round {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.custom-select {
+  border: 1px solid;
+  border-radius: 8px;
+  height:35px;
+  
+} 
+
+.dropbtn1 {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+div.dropdown-menu {
+    background-color: #00000098;
+	color: rgb(255, 248, 248) ;
+	min-width: 5rem;
+	position: relative;
+	z-index: 999999999999;
+}
+
+#battery-status {
+	background-color: none;
+	height: 30px;
+	width: 100%;
+	position: relative;
+}
+
+#chart1 {
+	background-color: none;
+	height: 120px;
+	width: 100%;
+	position: relative;
+}
+
+#chart2 {
+	background-color: none;
+	height: 120px;
+	width: 100%;
+	position: relative;
+}
+
+#chart3 {
+	background-color: none;
+	height: 120px;
+	width: 100%;
+	position: relative;
+}
+
+.label {
+	font-size: 8pt;
+}
+
+.battery-icon{
+	width: 35px;
+	height: 23px;
+}
+
+.btn {
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 5px 5px 5px 5px;
+  
+}
+
+.nav{background-color: rgba(191, 191, 191, 0.8);
+	padding: 5px 5px 5px 5px;
+
+}
+
+
+.Free {background-color: #04AA6D;} /* Green */
+
+
+.in_use {background-color: #f44336;} /* Red */ 
+
+.bus {background-color: #3643f4;} /* Red */
+
+.nav > li > a:hover{
+    background-color:rgb(0, 0, 0);
+	color:rgb(255, 248, 248);
+
+}
+
+
+
+
+</style>
+<title>BEB deployment plan</title>
+</head>
+<body>
+	<div>
+	<div>
+		<ul class="nav nav-pills">
+
+			<li class="nav-item" style = " padding:0px 5px 0px 5px; ">
+				<a href="/Main.html" class="nav-link">Home</a>
+			</li>
+					
+			<li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/Help.html" class="nav-link">Help</a>
+			</li>
+
+			<li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/About.html" class="nav-link">About</a>
+			</li>
+
+			<!-- <li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/About.html" class="nav-link=">About</a>
+				<a href="/About.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">About</a>
+			</li> -->
+
+			<!-- <li class="nav-item">
+				<a href="/Main.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">Home</a>
+			</li> -->
+			
+			<li class="nav-item" style="padding-left:100px;">
+				<p class="nav-link" style = " margin-bottom:0px; padding-bottom:0px; "><b>Plans:</b></p>
+			</li>
+			
+			<li class="nav-item" >
+				<select id="plansbutton" class="custom-select" style="width:90px;"></select>
+			</li>
+
+			<div class="nav-item ms-auto">
+				<!-- <p class="nav-link" style = " margin-bottom:0px; padding-bottom:0px; "><b>Plans:</b></p> -->
+				<p class="round" style= "color:blue; margin:3px 5px 0px 10px;  padding:4px" id="timeBox"><b>Time: 04:00 </b></p>
+			</div>
+			
+			<div class=" round col-6 slidecontainer" style="margin:3px; background-color: white; height:32px">
+				<input type="range" min="4" max="24" value="0" step="0.5" class="slider" id="myRange">
+			</div>
+			
+			<!-- <li class="nav-item ms-auto">
+				<a href="/Help.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">Help</a>
+			</li>
+			<li class="nav-item ms-auto">
+				<a href="/About.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">About</a>
+			</li> -->
+			
+		</ul>
+	</div>
+
+
+<div id="wrap2" style="width:100%; height:95% ;">
+
+	<div id='map' style="width:100%; height:95% ;position: fixed;"></div>
+	
+	<div class="box3">
+		<div class="boxRoute">
+			<div class="row">
+				<div class="col-sm-6"><p class="ex1"><b>BEB Route Info</b></p></div>
+				<div class="col-sm-6"><input type="search" placeholder="Search..." class="form-control search-input" data-table="customers-list" font-size:50%/></div>
+			</div>
+			
+			<div class="tableFixHead">
+				<table id="beb_table" style = font-size:80% class = "sortable table-striped customers-list"> 
+					<!-- <thead> 
+					<tr> 
+						<th>BEB #</th> 
+						<th>SOC %</th> 
+						<th>Mileage</th> 
+						<th>Route</th> 
+						<th>Location</th> 
+					</tr> 
+					</thead>  -->
+					<!--tbody> 
+					<tr> 
+						<td>1001</td> 
+						<td>50</td> 
+						<td>10</td> 
+						<td>46</td> 
+						<td>xxx</td> 
+					</tr> 
+					<tr> 
+						<td>1002</td> 
+						<td>40</td> 
+						<td>10</td> 
+						<td>45</td> 
+						<td>xx</td> 
+					</tr> 
+					<tr> 
+						<td>1003</td> 
+						<td>30</td> 
+						<td>10</td> 
+						<td>45</td> 
+						<td>xx</td> 
+					</tr> 
+					<tr> 
+						<td>1004</td> 
+						<td>20</td> 
+						<td>10</td> 
+						<td>45</td> 
+						<td>xx</td> 
+					</tr> 
+					<tr> 
+						<td>1005</td> 
+						<td>60</td> 
+						<td>10</td> 
+						<td>45</td> 
+						<td>xx</td> 
+					</tr>
+					<tr> 
+						<td>1001</td> 
+						<td>50</td> 
+						<td>10</td> 
+						<td>45</td> 
+						<td>xx</td> 
+					</tr>
+					</tbody--> 
+					</table> 
+			</div>
+		</div>
+	
+	</div>
+		
+	<div class="box3b">
+		<div class="boxBEB">
+			<div class="row">
+				<div class="col-sm-6"><p class="ex1"><b>BEB Info</b></p></div>
+				<div class="col-sm-6" style="left: 15px;"> BEB:
+					<select id="bebbutton" class="custom-select" style="width:100px;"></select>
+				</div>
+				<!-- <div class="dropdown">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					BEB #
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="a1 dropdown-item" href="#">1011</a>
+						<a class="a1 dropdown-item" href="#">1012</a>
+						<a class="a1 dropdown-item" href="#">1013</a>
+					</div>
+				</div> -->
+			</div>
+			<div id="battery-status">
+				<div style="width: 140px; float:left; height:20px; background:none; margin:0px">Battery status:</div>
+				<div style="width: 120px; float:left; height:20px; background:none; margin:0px; text-align:right; font-size:0.9em; font-weight: bold;" id="battery-percentage"> SoC: 100.00 %  </div>
+				<div style="width: 60px; float:left; height:20px; background:none; margin:0px; text-align:right"> <img src="icons/battery-full.png" id="battery-icon" class="battery-icon"> </div>
+				
+			</div>
+			<div id="chart1"></div>
+			<div id="chart2"></div>
+		</div>
+	</div>
+
+	<div class="box1">
+		<div class="boxCS">
+			<div class="row">
+				<div class="col-sm-4"><p class="ex1"><b>Charging Station</b></p></div>
+				<div class="col-sm-6" style="top: 13px;">
+					<select id="cebutton" class="custom-select" style="width:200px;"></select>
+				</div>
+			</div>
+			<div >
+				<div style="width: 105px; float:left; height:30px; background:none; margin:5px">Station status</div>
+				<div style="width: 55px; float:left; height:30px; background:none; margin:5px; text-align: right;"> <button id = "CEstat"></button> </div>
+
+				<div id = "bus_text" style="width: 120px; float:left; height:30px; background:none; padding:5px">  </div>
+
+				
+				</div>
+		<div id="chart3"></div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+	<script>
+		d3.queue()
+			.defer(d3.json, "../dataset/CE_list.json")
+			.defer(d3.json, "/dataset/coordinatesFinal3.json")
+			.defer(d3.json, "/dataset/charging_stations.json")
+			.defer(d3.json, "/dataset/final_data.json")
+			.defer(d3.json, "/dataset/final_cs.json")
+			.defer(d3.json, "../dataset/stopsFinal.json")
+			.defer(d3.json, "../dataset/non_cs_data.json")
+			.await(function(error, ce_data, busRoutes, ce_data2, finalBEBdata, finalChdata, busStops, nonChargingData) {
+			if (error) throw error;
+
+			//const plans = d3.keys(data)
+			const plans = Object.keys( finalBEBdata );
+
+			const plan = 1;
+			var routes = [];
+			switch (plan){
+				case 0:
+					routes = [2];
+					break;
+				case 1:
+					routes = [33, 35, 39, 41, 45, 47, 240];
+					break;
+				case 2:
+					routes = [2, 6, 11, 33, 35, 39, 41, 45, 47, 200, 205, 209, 227, 232, 240, 248, 500, 509, 513, 516, 520];
+					break;
+				case 3:
+					routes = [2,6,9,11,17,21,33,35,39,41,45,47,62,72,200,201,205,209,213,217,218,220,227,232,240,248,307,313,320,354,461,470,471,500,509,513,516,519,520,526,606,608,612,616,625,626,627,640,650,664,665,807,830,838,850,862,920];
+					break;
+			}
+
+			var map = L.map('map',{maxZoom:30,minZoom:10}).setView([40.7608,-111.8910], 12);
+			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'pk.eyJ1IjoibHVmZXJvZHJpZ3VleiIsImEiOiJja3RjZ3NhcDUwNXczMnhwaWNsYWoza2g1In0.fKg-OIe61K3QHUHyNmtKaA'
+				}).addTo(map);
+			map.zoomControl.setPosition('bottomright');
+
+			var nonChargingStationIcon = L.icon({
+				iconUrl: 'icons/regular-station.png',
+				iconSize: [26, 44],
+				iconAnchor: [13, 44],
+				popupAnchor: [0, -44]
+			});
+			
+			var chargingStationIcon = L.icon({
+				iconUrl: 'icons/charging-station.png',
+				iconSize: [26, 44],
+				iconAnchor: [13, 44],
+				popupAnchor: [0, -44]
+			});
+
+			var busInChargingStationIcon = L.icon({
+				iconUrl: 'icons/bus-in-station.png',
+				iconSize: [26, 44],
+				iconAnchor: [13, 44],
+				popupAnchor: [0, -44]
+			});
+
+			// add the bus icon
+			var busIcon = L.icon({
+				iconUrl: 'icons/bus-icon.png',
+				iconSize: [18.56, 20],
+				iconAnchor: [9.28, 20],
+				popupAnchor: [0, -20]
+			});
+
+			var iconStatus = [];
+
+			routesMileage = [];
+
+			for (let i = 0 ; i < routes.length ; i++ ) {
+				var q = 0;
+				var posFinal = [0,0];
+				
+				var auxDistance = 0;
+				var routesFromData = Object.keys( busRoutes );
+				var routeSections = Object.keys(busRoutes[routes[i]]);
+
+				for (let k = 0 ; k < routeSections.length ; k++) {
+					eval( "var point_" + i + "_" + k + " = new L.LatLng(" + busRoutes[routes[i]][k]["latA"] + "," + busRoutes[routes[i]][k]["longA"] + ");" );
+					posFinal = [busRoutes[routes[i]][k]["latB"],busRoutes[routes[i]][k]["longB"]];
+					lineName = busRoutes[routes[i]][k]["LineName"];
+					eval( "var auxPoint = new L.LatLng(" + busRoutes[routes[i]][k]["latB"] + "," + busRoutes[routes[i]][k]["longB"] + ");" );
+					eval( "auxDistance = auxDistance + point_" + i + "_" + k + ".distanceTo(auxPoint);" );
+				}
+				routesMileage.push(auxDistance*0.000621371);
+				eval( "var point_" + i + "_" + routeSections.length + " = new L.LatLng(" + posFinal[0] + "," + posFinal[1] + ");" );
+				var auxString = "var pointList_" + i +" = [" ;
+
+				for (let p = 0 ; p < routeSections.length ; p++){
+					auxString = auxString +  "point_" + i + "_" + p + ",";
+				}
+				auxString = auxString + "point_" + i + "_" + routeSections.length + "]";
+
+				eval( auxString );
+				eval( "var polyline_" + i + " = new L.Polyline(pointList_" + i +", {color: 'red',weight: 5,opacity: 0.6,smoothFactor: 1}); " ) ;
+				eval( "polyline_" + i + ".addTo(map);" );
+				eval( "polyline_" + i + ".bindPopup(\"" + lineName +"\");" );
+
+				eval( "polyline_" + i + ".on('click', function(){ polyline_"+i+".setStyle({ color: \"red\", opacity: 1, weight: 5 }); });" );
+				eval( "polyline_" + i + ".on('popupclose', function(e){ e.target.setStyle({color: \"red\", opacity: 0.6, weight: 5}); });" );
+			}
+			console.log(routesMileage)
+			// locate the charging stations
+			// for (let k = 0; k < eval("ce_data2.Plan" + plan + ".Name.length") ; k++){
+			// 	eval( "var station_" + k + " = L.marker([ce_data2.Plan"+ plan +".Latitude["+ k + "], ce_data2.Plan" + plan +".Longitude[" + k + "]], {icon: chargingStationIcon}).addTo(map).bindPopup(ce_data2.Plan" + plan + ".Name[" + k + "]); ");
+			// }
+			
+			// initial charts
+			var divWidth = document.getElementById("chart1").clientWidth;
+			// set the dimensions and margins of the graph
+			var margin = {top: 10, right: 10, bottom: 30, left: 50},
+				width = divWidth - margin.left - margin.right,
+				height = 110 - margin.top - margin.bottom;
+				height2 = 140 - margin.top - margin.bottom;
+
+			// append the svg object to the body of the page
+			var svg1 = d3.select("#chart1")
+			.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+				.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+
+			var svg2 = d3.select("#chart2")
+			.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+				.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+
+			var svg3 = d3.select("#chart3")
+			.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height2 + margin.top + margin.bottom)
+			.append("g")
+				.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+
+			var planList = Object.keys( finalBEBdata );
+			var busNumbers = Object.keys( finalBEBdata["Plan1"] );
+			var times = Object.keys(finalBEBdata["Plan1"][busNumbers[0]]);
+			var chargList = Object.keys( finalChdata["Plan1"] );
+			var SoC = [];
+			var mileage = [];
+			var Energy = [];
+			
+			auxData1 = "dataSoC = [";
+			auxData2 = "dataMileage = [";
+			auxData3 = "dataEnergy = [";
+			for (let i=0 ; i<times.length ; i++){
+				SoC.push( finalBEBdata[planList[0]][busNumbers[0]][times[i]]["SoC"] );
+				mileage.push( finalBEBdata[planList[0]][busNumbers[0]][times[i]]["Mileage"] );
+				Energy.push( finalChdata[planList[0]][chargList[0]][times[i]]["energy"] );
+
+				auxData1 = auxData1 + "{ x: " + times[i] + ",   y: " + SoC[i].toFixed(2) + " },\n";
+				auxData2 = auxData2 + "{ x: " + times[i] + ",   y: " + mileage[i].toFixed(2) + " },\n";
+				auxData3 = auxData3 + "{ x: " + times[i] + ",   y: " + Energy[i].toFixed(2)/1000 + " },\n";
+			}
+			auxData1 = auxData1 + "];";
+			auxData2 = auxData2 + "];";
+			auxData3 = auxData3 + "];";
+			eval(auxData1);
+			eval(auxData2);
+			eval(auxData3);
+
+			
+			var max3 = d3.max(dataEnergy, function(d) { return d.y; } );
+
+			// Add X axis --> it is a date format
+			var x = d3.scaleLinear()
+				.domain([0,24])
+				.range([ 0, width ]);
+			let xaxis = d3.axisBottom(x);
+			svg1.append("g")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xaxis);
+
+			// Add Y axis
+			var y1 = d3.scaleLinear()
+				.domain([0, 100])
+				.range([ height, 0 ]);
+			let yaxis = d3.axisLeft(y1);
+			yaxis.ticks(5);
+			svg1.append("g")
+				.call(yaxis);
+
+			// Add the line
+			svg1.append("path")
+				.datum(dataSoC)
+				.attr("fill", "none")
+				.attr("stroke", "steelblue")
+				.attr("stroke-width", 1.5)
+				.attr("d", d3.line()
+					.x(d => x(d.x) )
+					.y(d => y1(d.y) )
+					);
+
+			svg1.append("text")
+				.attr("class", "x label")
+				.attr("text-anchor", "end")
+				.attr("x", width/2)
+				.attr("y", height+30)
+				.text("Time (h)");
+
+			svg1.append("text")
+				.attr("class", "y label")
+				.attr("text-anchor", "end")
+				.attr("x", -height/2+20)
+				.attr("y", -30)
+				//.attr("dy", ".75em")
+				.attr("transform", "rotate(-90)")
+				.text("SoC (%)");
+
+			//let xaxis = d3.axisBottom(x);
+			svg2.append("g")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xaxis);
+			// Add Y axis
+			var y2 = d3.scaleLinear()
+				.domain([0, 65])
+				.range([ height, 0 ]);
+			let y2axis = d3.axisLeft(y2);
+			y2axis.ticks(5);
+			svg2.append("g")
+				.call(y2axis);
+
+			// Add the line
+			svg2.append("path")
+				.datum(dataMileage)
+				.attr("fill", "none")
+				.attr("stroke", "steelblue")
+				.attr("stroke-width", 1.5)
+				.attr("d", d3.line()
+					.x(d => x(d.x) )
+					.y(d => y2(d.y) )
+					);
+			
+			svg2.append("text")
+				.attr("class", "x label")
+				.attr("text-anchor", "end")
+				.attr("x", width/2)
+				.attr("y", height+30)
+				.text("Time (h)");
+
+			svg2.append("text")
+				.attr("class", "y label")
+				.attr("text-anchor", "end")
+				.attr("x", -height/2+20)
+				.attr("y", -30)
+				.attr("transform", "rotate(-90)")
+				.text("Mileage");
+
+
+			//let xaxis = d3.axisBottom(x);
+			svg3.append("g")
+				.attr("transform", "translate(0," + height2 + ")")
+				.call(xaxis);
+
+			// Add Y axis
+			var y3 = d3.scaleLinear()
+				.domain([0, max3*1.1+0.1])
+				.range([ height2, 0 ]);
+
+			let y3axis = d3.axisLeft(y3);
+			yaxis.ticks(0.1);
+			svg3.append("g")
+				.call(y3axis);
+
+			// Add the line
+			svg3.append("path")
+				.datum(dataEnergy)
+				.attr("fill", "none")
+				.attr("stroke", "steelblue")
+				.attr("stroke-width", 1.5)
+				.attr("d", d3.line()
+					.x(d => x(d.x) )
+					.y(d => y3(d.y) )
+					);
+
+			svg3.append("text")
+				.attr("class", "x label")
+				.attr("text-anchor", "end")
+				.attr("x", width/2)
+				.attr("y", height2+30)
+				.text("Time (h)");
+
+			svg3.append("text")
+				.attr("class", "y label")
+				.attr("text-anchor", "end")
+				.attr("x", -height2/2+35)
+				.attr("y", -32)
+				//.attr("dy", ".75em")
+				.attr("transform", "rotate(-90)")
+				.text("Energy (MWh)");
+			
+
+			//delete_table();
+			//updatetable2(plans[0]);
+
+			// map.on('zoomend', function() {
+			// 	var currentZoom = map.getZoom();
+			// 	var zoomedBusIcon = new L.Icon({
+			// 		iconUrl: 'icons/bus-icon.png',
+			// 		iconSize: [18.56*(1 + (currentZoom-12)/5), 20*(1 + (currentZoom-12)/5)],
+			// 		iconAnchor: [9.28*(1 + (currentZoom-12)/5), 20*(1 + (currentZoom-12)/5)],
+			// 		popupAnchor: [0, -20*(1 + (currentZoom-12)/5)]
+			// 	});
+			// 	var zoomedCharging = new L.Icon({
+			// 		iconUrl: 'icons/bus-in-station.png',
+			// 		iconSize: [26*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+			// 		iconAnchor: [13*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+			// 		popupAnchor: [0, -44*(1 + (currentZoom-12)/5)]
+			// 	});
+			// 	for( let r = 0 ; r < routes.length ; r++ ){
+			// 		eval( "busLoc_" + r + ".setIcon(zoomedBusIcon);" );
+			// 	}
+			// 	for( let t = 0 ; t < eval("ce_data2.Plan" + plan + ".Name.length") ; t++ ){
+			// 		eval( "station_" + t + ".setIcon(zoomedCharging);" );
+			// 	}
+			// });
+
+			// add the status of charging station
+			d3.select("#CEstat")
+				.text("Free") // text showed in the menu
+				.attr("class", "btn Free") // 
+
+			// add the plan options to the button
+			d3.select("#plansbutton")
+				.selectAll('myOptions')
+				.data(plans)
+				.enter()
+				.append('option')
+				.text(function (d) { return d; }) // text showed in the menu
+				.attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+			// Initialize the BEB list
+			var BEB_list = d3.select("#bebbutton")
+				.selectAll('myOptions')
+				.data(Object.keys( finalBEBdata["Plan1"] ))
+				.enter()
+				.append('option')
+				.text(function (d) { return d; }) // text showed in the menu
+				.attr("value", function (d) { return d; }); // corresponding value returned by the button
+
+			// Initialize the CE list
+			var CE_list = d3.select("#cebutton")
+				.selectAll('myOptions')
+				.data(Object.keys( finalChdata["Plan1"] ))
+				.enter()
+				.append('option')
+				.text(function (d) { return d; }) // text showed in the menu
+				.attr("value", function (d) { return d; }); // corresponding value returned by the button
+
+			function locateBuses(){
+				var currentPlan = document.getElementById("plansbutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				iconStatus = []
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				var busNumbers = Object.keys( finalBEBdata[currentPlan] );
+				var times = Object.keys( finalBEBdata[currentPlan][busNumbers[0]] );
+				var auxLocation, auxRouteNumber;
+				for (let k = 0 ; k < busNumbers.length ; k++){
+					auxLocation = finalBEBdata[currentPlan][busNumbers[k]][currentTime]["Location"];
+					auxRouteNumber = finalBEBdata[currentPlan][busNumbers[k]][currentTime]["Route_number"];
+					if (auxLocation == "On Route"){
+						// identify the route
+						//if ( busRoutes[auxRouteNumber][0]["station"] == )
+						// identificar el indice del tiempo
+						auxTime = times.findIndex((element) => element == currentTime);
+						var qq = 0;
+						while (finalBEBdata[currentPlan][busNumbers[k]][times[auxTime + qq]]["Location"] == "On Route"){
+							qq += 1
+						}
+						var destination = finalBEBdata[currentPlan][busNumbers[k]][times[auxTime + qq]]["Location"];
+						// verificar que el destino coincida con el ultimo segmento de la ruta
+						routeSections = Object.keys(busRoutes[auxRouteNumber]);
+						if ( busRoutes[auxRouteNumber][routeSections.length - 1]["station"] == destination ){
+							busDistanceFrom = finalBEBdata[currentPlan][busNumbers[k]][currentTime]["Distance_from_last_station"];
+						} else{
+							busDistanceFrom = finalBEBdata[currentPlan][busNumbers[k]][currentTime]["Route_length"] - finalBEBdata[currentPlan][busNumbers[k]][currentTime]["Distance_from_last_station"];
+						}
+						for (let p = 0 ; p < routeSections.length ; p++){
+							if (busRoutes[auxRouteNumber][p]["cummulativeDistance"] >= busDistanceFrom){
+								eval( "busLoc_" + k + " = L.marker(["+ busRoutes[auxRouteNumber][p]["latA"] +","+ busRoutes[auxRouteNumber][p]["longA"] +"], {icon: busIcon}).addTo(map).bindPopup(\"Bus number: "+ busNumbers[k] +"<br>Route number: " + auxRouteNumber + "<br>Route name: "+ busRoutes[auxRouteNumber][p]["LineName"] +"<br>SoC: " + finalBEBdata[currentPlan][busNumbers[k]][currentTime]["SoC"].toFixed(2) + "% \"); ");
+								iconStatus.push(1); // bus
+								break;
+							}
+						}
+					}
+					else{
+						//eval( "busLoc_" + k + " = L.marker(["+ 0 +","+ 0 +"], {icon: chargingStationIcon}); ");
+						
+						//var found = 0;
+						// check if the station is in the charging list
+						// for( let t = 0 ; t < eval("ce_data2." + currentPlan + ".Name.length") ; t++ ){
+						// 	getStationName = eval("ce_data2." + currentPlan + ".Name[" + t + "];") ;
+						// 	if ( getStationName == auxLocation ){
+						// 		//var auxGetSt = "\"" + getStationName + "\""
+						// 		eval( "busLoc_" + k + " = L.marker([ ce_data2[\"" + currentPlan + "\"][\"Latitude\"]["+t+"] , ce_data2[\"" + currentPlan + "\"][\"Longitude\"]["+t+"] ], {icon: busInChargingStationIcon}).addTo(map).bindPopup(\"Location: "+ getStationName +"<br>Energy consumed: "+ finalChdata[currentPlan][getStationName][currentTime]["energy"].toFixed(0)/1000 +" MWh\"); ");
+						// 		found = 1;
+						// 		iconStatus.push(2); // charging station
+						// 		break
+						// 	}
+						// }
+						// if (found == 0){
+						console.log("\"" + auxLocation + "\"")
+						try {
+							eval( "busLoc_" + k + " = L.marker([" + busStops[auxLocation + " "]["lat"] + "," + busStops[auxLocation + " "]["long"] + " ], {icon: busIcon}).addTo(map).bindPopup(\""+ auxLocation +"\");");
+						} catch (error) {
+  							console.error(error);
+							  eval( "busLoc_" + k + " = L.marker([" + 0 + "," + 0 + " ], {icon: busIcon}).addTo(map).bindPopup(\""+ auxLocation +"\");");
+						}
+						
+						iconStatus.push(1); // regular station
+						//}
+					}
+				}
+
+				// create a loop to explore all the charging station status (based on plan, time). for those free, add a reg icon. if in use, send to 0,0
+				console.log(iconStatus)
+			}
+
+			function locateStations(){
+				var currentPlan = document.getElementById("plansbutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				iconStatus = []
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				var stationNames = Object.keys( finalChdata[currentPlan] );
+				for (let k = 0; k < stationNames.length ; k++){
+					try {
+						eval( "stationLoc_" + k + " = L.marker([" + busStops[stationNames[k] + " "]["lat"] + "," + busStops[stationNames[k] + " "]["long"] + " ], {icon: chargingStationIcon}).addTo(map).bindPopup(\""+ stationNames[k] +"<br>Energy consumed: "+ finalChdata[currentPlan][stationNames[k]][currentTime]["energy"].toFixed(0)/1000 +" MWh\"); ");
+					} catch (error) {
+						console.error(error);
+						eval( "stationLoc_" + k + " = L.marker([" + 0 + "," + 0 + " ], {icon: chargingStationIcon}).addTo(map).bindPopup(\""+ stationNames[k] +"<br>Energy consumed: "+ finalChdata[currentPlan][stationNames[k]][currentTime]["energy"].toFixed(0)/1000 +" MWh\"); ");
+					}
+				}
+
+				// now locate the non-charging stations
+				var nonChargingStationNames = nonChargingData[currentPlan] ;
+				for (let j=0 ; j<nonChargingStationNames.length ; j++){
+					try {
+						eval( "nonChStationLoc_" + j + " = L.marker([" + busStops[nonChargingStationNames[j] + " "]["lat"] + "," + busStops[nonChargingStationNames[j] + " "]["long"] + " ], {icon: nonChargingStationIcon}).addTo(map).bindPopup(\""+ nonChargingStationNames[j] +"\");");
+					} catch (error) {
+						console.error(error);
+						eval( "nonChStationLoc_" + j + " = L.marker([" + 0 + "," + 0 + " ], {icon: nonChargingStationIcon}).addTo(map).bindPopup(\""+ nonChargingStationNames[j] +"\");");
+					}
+				}
+			}
+
+			function clearBuses(){
+				var currentPlan = document.getElementById("plansbutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				var busNumbers = Object.keys( finalBEBdata[currentPlan] );
+				var auxLocation, auxRouteNumber;
+				for (let k = 0 ; k < busNumbers.length ; k++){
+					try {
+						eval( "map.removeLayer(busLoc_" + k + ");");
+						} catch (error) {
+						console.error(error);
+					}
+				}
+			}
+
+			map.on('zoomend', function() {
+				var currentPlan = document.getElementById("plansbutton").value;
+				console.log(currentPlan)
+				var currentZoom = map.getZoom();
+				var zoomedBusIcon = new L.Icon({
+					iconUrl: 'icons/bus-icon.png',
+					iconSize: [18.56*(1 + (currentZoom-12)/5), 20*(1 + (currentZoom-12)/5)],
+					iconAnchor: [9.28*(1 + (currentZoom-12)/5), 20*(1 + (currentZoom-12)/5)],
+					popupAnchor: [0, -20*(1 + (currentZoom-12)/5)]
+				});
+				var zoomedCharging = new L.Icon({
+					iconUrl: 'icons/charging-station.png',
+					iconSize: [26*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+					iconAnchor: [13*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+					popupAnchor: [0, -44*(1 + (currentZoom-12)/5)]
+				});
+				var zoomedNonCharging = new L.Icon({
+					iconUrl: 'icons/regular-station.png',
+					iconSize: [26*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+					iconAnchor: [13*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+					popupAnchor: [0, -44*(1 + (currentZoom-12)/5)]
+				});
+				var zoomedBusInCharging = new L.Icon({
+					iconUrl: 'icons/bus-in-station.png',
+					iconSize: [26*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+					iconAnchor: [13*(1 + (currentZoom-12)/5), 44*(1 + (currentZoom-12)/5)],
+					popupAnchor: [0, -44*(1 + (currentZoom-12)/5)]
+				});
+
+				var busNumbers = Object.keys( finalBEBdata[currentPlan] );
+				for( let r = 0 ; r < busNumbers.length ; r++ ){
+					// if (iconStatus[r] == 1){
+					eval( "busLoc_" + r + ".setIcon(zoomedBusIcon);" );
+					// }
+					// else{
+					// 	if (iconStatus[r] == 2){
+					// 		eval( "busLoc_" + r + ".setIcon(zoomedBusInCharging);" );
+					// 	}
+					// 	else{
+					// 		eval( "busLoc_" + r + ".setIcon(zoomedCharging);" );
+					// 	}
+					// }
+				}
+
+				var stationNames = Object.keys( finalChdata[currentPlan] );
+				for (let k = 0; k < stationNames.length ; k++){
+					eval( "stationLoc_" + k + ".setIcon(zoomedCharging);");
+				}
+				// for( let t = 0 ; t < eval("ce_data2." + plan + ".Name.length") ; t++ ){
+				// 	eval( "station_" + t + ".setIcon(zoomedCharging);" );
+				// }
+
+				var nonChStationNames = nonChargingData[currentPlan];
+				for (let k = 0; k < nonChStationNames.length ; k++){
+					eval( "nonChStationLoc_" + k + ".setIcon(zoomedNonCharging);");
+				}
+			});
+				
+			// A function that update the list of the beb
+			function updatelists(plan) {
+				var bobs = d3.select("#bebbutton")
+				.selectAll('myOptions')
+				.data(Object.keys( finalBEBdata[plan] ))
+				.enter()
+				.append('option')
+				.text(function (d) { return d; }) // text showed in the menu
+				.attr("value", function (d) { return d; }) // corresponding value returned by the button
+	  		};
+
+			  // A function that update the list of the beb
+			function updatece(plan) {
+				var bobs = d3.select("#cebutton")
+				.selectAll('myOptions')
+				.data(Object.keys( finalChdata[plan]))
+				.enter()
+				.append('option')
+				.text(function (d) { return d; }) // text showed in the menu
+				.attr("value", function (d) { return d; }) // corresponding value returned by the button
+	  		};
+
+			function tabulate(data, columns) {
+				var table = d3.select('#beb_table')
+				var thead = table.append('thead')
+				var	tbody = table.append('tbody');
+				const m_column = ['BEB #', 'SoC %', 'Mileage', 'Route', 'Status']
+
+				// append the header row
+				thead.append('tr')
+				.selectAll('th')
+				.data(m_column).enter()
+				.append('th')
+					.text(function (m_column) { return m_column; });
+
+				// create a row for each object in the data
+				var rows = tbody.selectAll('tr')
+				.data(data)
+				.enter()
+				.append('tr');
+
+				// create a cell in each row for each column
+				var cells = rows.selectAll('td')
+				.data(function (row) {
+					return columns.map(function (column) {
+					return {column: column, value: row[column]};
+					});
+				})
+				.enter()
+				.append('td')
+					.text(function (d) { return d.value; });
+
+			return table;
+			}
+
+			// Initialize the table
+			//tabulate(dataTable, ['BEB', 'SoC', 'Mileage', 'Route', 'Location']); // 2 column table
+
+
+			function updatetable(plan) {
+				if (plan == "Plan1"){
+					tabulate(data1, ['BEB', 'SoC (%)', 'Mileage', 'Route', 'Location']);
+				}
+				if (plan == "Plan2"){
+					tabulate(data2, ['BEB', 'SoC (%)', 'Mileage', 'Route', 'Location']);
+				}
+				if (plan == "Plan3"){
+					tabulate(data3, ['BEB', 'SoC (%)', 'Mileage', 'Route', 'Location']);
+				}
+			}
+
+			function updatetable2(currentPlan) {
+				//var currentPlan = document.getElementById("plansbutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				var busNumbers = Object.keys( finalBEBdata[currentPlan] );
+				auxDataTable = "dataTable = [";
+				for (let j = 0 ; j < busNumbers.length ; j++){
+					auxDataTable = auxDataTable + "{ BEB: " + busNumbers[j] + ",   SoC: " + finalBEBdata[currentPlan][busNumbers[j]][currentTime]["SoC"].toFixed(2) + ",   Mileage: " + finalBEBdata[currentPlan][busNumbers[j]][currentTime]["Mileage"].toFixed(2) + ",   Route: " + finalBEBdata[currentPlan][busNumbers[j]][currentTime]["Route_number"] + ",   Location: \"" + finalBEBdata[currentPlan][busNumbers[j]][currentTime]["Location"] + "\"},\n";
+				}
+				auxDataTable = auxDataTable + "];";
+				eval(auxDataTable);
+				tabulate(dataTable, ['BEB', 'SoC', 'Mileage', 'Route', 'Location']);
+
+
+
+			}
+
+
+			function delete_beb_list() {
+				//clears all the guardians with the specified id
+				document.getElementById("bus_text").innerHTML =
+					null;
+			}
+
+
+			function delete_table() {
+				//clears all the guardians with the specified id
+				document.getElementById("beb_table").innerHTML =
+					null;
+			}
+
+			function delete_beb() {
+					//clears all the guardians with the specified id
+					document.getElementById("bebbutton").innerHTML =
+						null;
+				}
+
+			function delete_ce() {
+					//clears all the guardians with the specified id
+					document.getElementById("cebutton").innerHTML =
+						null;
+				}
+
+			function delete_map() {
+				if (map != undefined) {
+					map.remove(); 
+				}
+			}
+
+			//delete_table();
+			updatetable2(plans[0]);
+			locateBuses()
+			locateStations()
+
+			function updatemap(plan){
+				// insert the map
+				var routes = [];
+				switch (plan){
+					case 'Plan1':
+						routes = [33, 35, 39, 41, 45, 47, 240];
+						break;
+					case 'Plan2':
+						routes = [2, 6, 11, 33, 35, 39, 41, 45, 47, 200, 205, 209, 227, 232, 240, 248, 500, 509, 513, 516, 520];
+						break;
+					case 'Plan3':
+						routes = [2,6,9,11,17,21,33,35,39,41,45,47,62,72,200,201,205,209,213,217,218,220,227,232,240,248,307,313,320,354,461,470,471,500,509,513,516,519,520,526,606,608,612,616,625,626,627,640,650,664,665,807,830,838,850,862,920];
+						break;
+					default:
+						routes = [2];
+						break;
+				}
+
+				map = L.map('map',{maxZoom:30,minZoom:10}).setView([40.7608,-111.8910], 12);
+				L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+					maxZoom: 18,
+					id: 'mapbox/streets-v11',
+					tileSize: 512,
+					zoomOffset: -1,
+					accessToken: 'pk.eyJ1IjoibHVmZXJvZHJpZ3VleiIsImEiOiJja3RjZ3NhcDUwNXczMnhwaWNsYWoza2g1In0.fKg-OIe61K3QHUHyNmtKaA'
+					}).addTo(map);
+
+				// add the charging station icon
+				var chargingStationIcon = L.icon({
+					iconUrl: 'icons/charging-station.png',
+					iconSize: [26, 44],
+					iconAnchor: [13, 44],
+					popupAnchor: [0, -44]
+				});
+
+				// add the bus icon
+				var busIcon = L.icon({
+					iconUrl: 'icons/bus-icon.png',
+					iconSize: [18.56, 20],
+					iconAnchor: [9.28, 20],
+					popupAnchor: [0, -20]
+				});
+
+				for (let i = 0 ; i < routes.length ; i++ ) {
+					var q = 0;
+					var posFinal = [0,0];
+					
+					var auxDistance = 0;
+					var routesFromData = Object.keys( busRoutes );
+					var routeSections = Object.keys(busRoutes[routes[i]]);
+
+					for (let k = 0 ; k < routeSections.length ; k++) {
+						eval( "var point_" + i + "_" + k + " = new L.LatLng(" + busRoutes[routes[i]][k]["latA"] + "," + busRoutes[routes[i]][k]["longA"] + ");" );
+						posFinal = [busRoutes[routes[i]][k]["latB"],busRoutes[routes[i]][k]["longB"]];
+						lineName = busRoutes[routes[i]][k]["LineName"];;
+						eval( "var auxPoint = new L.LatLng(" + busRoutes[routes[i]][k]["latB"] + "," + busRoutes[routes[i]][k]["longB"] + ");" );
+						eval( "auxDistance = auxDistance + point_" + i + "_" + k + ".distanceTo(auxPoint);" );
+					}
+					routesMileage.push(auxDistance*0.000621371);
+					eval( "var point_" + i + "_" + routeSections.length + " = new L.LatLng(" + posFinal[0] + "," + posFinal[1] + ");" );
+					var auxString = "var pointList_" + i +" = [" ;
+
+					for (let p = 0 ; p < routeSections.length ; p++){
+						auxString = auxString +  "point_" + i + "_" + p + ",";
+					}
+					auxString = auxString + "point_" + i + "_" + routeSections.length + "]";
+
+					eval( auxString );
+					eval( "polyline_" + i + " = new L.Polyline(pointList_" + i +", {color: 'red',weight: 5,opacity: 0.6,smoothFactor: 1}); " ) ;
+					eval( "polyline_" + i + ".addTo(map);" );
+					eval( "polyline_" + i + ".bindPopup(\"" + lineName +"\");" );
+
+					eval( "polyline_" + i + ".on('click', function(){ polyline_"+i+".setStyle({ color: \"red\", opacity: 1, weight: 5 }); });" );
+					eval( "polyline_" + i + ".on('popupclose', function(e){ e.target.setStyle({color: \"red\", opacity: 0.6, weight: 5}); });" );
+				}
+				// locate the charging stations
+				// for (let k = 0; k < eval("ce_data2." + plan + ".Name.length") ; k++){
+				// 	eval( "var station_" + k + " = L.marker([ce_data2."+ plan +".Latitude["+ k + "], ce_data2." + plan +".Longitude[" + k + "]], {icon: chargingStationIcon}).addTo(map).bindPopup(ce_data2." + plan + ".Name[" + k + "]); ");
+				// }
+					
+			}
+
+			function updateCharts2(){
+				var currentBus = document.getElementById("bebbutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				var currentPlan = document.getElementById("plansbutton").value;
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				times = Object.keys(finalBEBdata[currentPlan][currentBus]);
+				SoC = [];
+				mileage = [];
+
+
+				auxData1 = "dataSoC = [";
+				auxData2 = "dataMileage = [";
+
+				auxTimeMax = times.findIndex((element) => element == currentTime);
+				for (let i=0 ; i<=auxTimeMax ; i++){
+					SoC.push( finalBEBdata[currentPlan][currentBus][times[i]]["SoC"] );
+					mileage.push( finalBEBdata[currentPlan][currentBus][times[i]]["Mileage"] );
+
+					auxData1 = auxData1 + "{ x: " + times[i] + ",   y: " + SoC[i] + " },\n";
+					auxData2 = auxData2 + "{ x: " + times[i] + ",   y: " + mileage[i] + " },\n";
+				}
+				auxData1 = auxData1 + "];";
+				auxData2 = auxData2 + "];";
+				eval(auxData1);
+				eval(auxData2);
+
+
+				// Add X axis --> it is a date format
+				var x = d3.scaleLinear()
+					.domain([0,24])
+					.range([ 0, width ]);
+				let xaxis = d3.axisBottom(x);
+				svg1.append("g")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xaxis);
+
+				// Add Y axis
+				var y1 = d3.scaleLinear()
+					.domain([0, 100])
+					.range([ height, 0 ]);
+				let yaxis = d3.axisLeft(y1);
+				yaxis.ticks(5);
+				svg1.append("g")
+					.call(yaxis);
+
+				// Add the line
+				svg1.append("path")
+					.datum(dataSoC)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y1(d.y) )
+						);
+
+				svg1.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "end")
+					.attr("x", width/2)
+					.attr("y", height+30)
+					.text("Time (h)");
+
+				svg1.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height/2+20)
+					.attr("y", -30)
+					//.attr("dy", ".75em")
+					.attr("transform", "rotate(-90)")
+					.text("SoC (%)");
+
+				//let xaxis = d3.axisBottom(x);
+				svg2.append("g")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xaxis);
+				// Add Y axis
+				var y2 = d3.scaleLinear()
+					.domain([0, 65])
+					.range([ height, 0 ]);
+				let y2axis = d3.axisLeft(y2);
+				y2axis.ticks(5);
+				svg2.append("g")
+					.call(y2axis);
+
+				// Add the line
+				svg2.append("path")
+					.datum(dataMileage)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y2(d.y) )
+						);
+				
+				svg2.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "end")
+					.attr("x", width/2)
+					.attr("y", height+30)
+					.text("Time (h)");
+
+				svg2.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height/2+20)
+					.attr("y", -30)
+					.attr("transform", "rotate(-90)")
+					.text("Mileage");
+			}
+
+
+			function updateChart3(){
+				var currentchrg = document.getElementById("cebutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				var currentPlan = document.getElementById("plansbutton").value;
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				times = Object.keys(finalChdata[currentPlan][currentchrg]);
+
+				Energy = [];
+
+				auxData3 = "dataEnergy = [";
+				auxTimeMax = times.findIndex((element) => element == currentTime);
+				for (let i=0 ; i<auxTimeMax ; i++){
+					Energy.push( finalChdata[currentPlan][currentchrg][times[i]]["energy"] );
+
+					auxData3 = auxData3 + "{ x: " + times[i] + ",   y: " + Energy[i].toFixed(2)/1000 + " },\n";
+				}
+
+				auxData3 = auxData3 + "];";
+				eval(auxData3);
+
+				var max3 = d3.max(dataEnergy, function(d) { return d.y; } );
+
+
+
+				
+
+				
+				
+
+				// Add X axis --> it is a date format
+				var x = d3.scaleLinear()
+					.domain([0,24])
+					.range([ 0, width ]);
+				let xaxis = d3.axisBottom(x);
+
+
+					
+
+				//let xaxis = d3.axisBottom(x);
+				svg3.append("g")
+					.attr("transform", "translate(0," + height2 + ")")
+					.call(xaxis);
+
+				// Add Y axis
+				var y3 = d3.scaleLinear()
+					.domain([0, max3*1.1+0.1 ])
+					.range([ height2, 0 ]);
+
+				let y3axis = d3.axisLeft(y3);
+				yaxis.ticks(1);
+				svg3.append("g")
+					.call(y3axis);
+
+				// Add the line
+				svg3.append("path")
+					.datum(dataEnergy)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y3(d.y) )
+						);
+
+				svg3.append("text")
+				.attr("class", "x label")
+				.attr("text-anchor", "end")
+				.attr("x", width/2)
+				.attr("y", height2+30)
+				.text("Time (h)");
+
+				svg3.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height2/2+35)
+					.attr("y", -32)
+					//.attr("dy", ".75em")
+					.attr("transform", "rotate(-90)")
+					.text("Energy (MWh)");
+			}
+
+			function updateChartsByPlan(plan){
+				busNumbers = Object.keys( finalBEBdata[plan] );
+				times = Object.keys(finalBEBdata[plan][busNumbers[0]]);
+				SoC = [];
+				mileage = [];
+
+				auxData1 = "dataSoC = [";
+				auxData2 = "dataMileage = [";
+				for (let i=0 ; i<times.length ; i++){
+					SoC.push( finalBEBdata[plan][busNumbers[0]][times[i]]["SoC"] );
+					mileage.push( finalBEBdata[plan][busNumbers[0]][times[i]]["Mileage"] );
+
+					auxData1 = auxData1 + "{ x: " + times[i] + ",   y: " + SoC[i] + " },\n";
+					auxData2 = auxData2 + "{ x: " + times[i] + ",   y: " + mileage[i] + " },\n";
+				}
+				auxData1 = auxData1 + "];";
+				auxData2 = auxData2 + "];";
+				eval(auxData1);
+				eval(auxData2);
+
+				// Add X axis --> it is a date format
+				var x = d3.scaleLinear()
+					.domain([0,24])
+					.range([ 0, width ]);
+				let xaxis = d3.axisBottom(x);
+				svg1.append("g")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xaxis);
+
+				// Add Y axis
+				var y1 = d3.scaleLinear()
+					.domain([0, 100])
+					.range([ height, 0 ]);
+				let yaxis = d3.axisLeft(y1);
+				yaxis.ticks(5);
+				svg1.append("g")
+					.call(yaxis);
+
+				// Add the line
+				svg1.append("path")
+					.datum(dataSoC)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y1(d.y) )
+						);
+
+				svg1.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "end")
+					.attr("x", width/2)
+					.attr("y", height+30)
+					.text("Time (h)");
+
+				svg1.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height/2+20)
+					.attr("y", -30)
+					//.attr("dy", ".75em")
+					.attr("transform", "rotate(-90)")
+					.text("SoC (%)");
+
+				//let xaxis = d3.axisBottom(x);
+				svg2.append("g")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xaxis);
+				// Add Y axis
+				var y2 = d3.scaleLinear()
+					.domain([0, 65])
+					.range([ height, 0 ]);
+				let y2axis = d3.axisLeft(y2);
+				y2axis.ticks(5);
+				svg2.append("g")
+					.call(y2axis);
+
+				// Add the line
+				svg2.append("path")
+					.datum(dataMileage)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y2(d.y) )
+						);
+				
+				svg2.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "end")
+					.attr("x", width/2)
+					.attr("y", height+30)
+					.text("Time (h)");
+
+				svg2.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height/2+20)
+					.attr("y", -30)
+					.attr("transform", "rotate(-90)")
+					.text("Mileage");
+			}
+
+			function updateChartsByBEB(beb,currentPlan){
+				busNumbers = Object.keys( finalBEBdata[currentPlan] );
+				times = Object.keys(finalBEBdata[currentPlan][beb]);
+				SoC = [];
+				mileage = [];
+
+				auxData1 = "dataSoC = [";
+				auxData2 = "dataMileage = [";
+				for (let i=0 ; i<times.length ; i++){
+					SoC.push( finalBEBdata[currentPlan][beb][times[i]]["SoC"] );
+					mileage.push( finalBEBdata[currentPlan][beb][times[i]]["Mileage"] );
+
+					auxData1 = auxData1 + "{ x: " + times[i] + ",   y: " + SoC[i] + " },\n";
+					auxData2 = auxData2 + "{ x: " + times[i] + ",   y: " + mileage[i] + " },\n";
+				}
+				auxData1 = auxData1 + "];";
+				auxData2 = auxData2 + "];";
+				eval(auxData1);
+				eval(auxData2);
+
+				// Add X axis --> it is a date format
+				var x = d3.scaleLinear()
+					.domain([0,24])
+					.range([ 0, width ]);
+				let xaxis = d3.axisBottom(x);
+				svg1.append("g")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xaxis);
+
+				// Add Y axis
+				var y1 = d3.scaleLinear()
+					.domain([0, 100])
+					.range([ height, 0 ]);
+				let yaxis = d3.axisLeft(y1);
+				yaxis.ticks(5);
+				svg1.append("g")
+					.call(yaxis);
+
+				// Add the line
+				svg1.append("path")
+					.datum(dataSoC)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y1(d.y) )
+						);
+
+				svg1.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "end")
+					.attr("x", width/2)
+					.attr("y", height+30)
+					.text("Time (h)");
+
+				svg1.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height/2+20)
+					.attr("y", -30)
+					//.attr("dy", ".75em")
+					.attr("transform", "rotate(-90)")
+					.text("SoC (%)");
+
+				//let xaxis = d3.axisBottom(x);
+				svg2.append("g")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xaxis);
+				// Add Y axis
+				var y2 = d3.scaleLinear()
+					.domain([0, 65])
+					.range([ height, 0 ]);
+				let y2axis = d3.axisLeft(y2);
+				y2axis.ticks(5);
+				svg2.append("g")
+					.call(y2axis);
+
+				// Add the line
+				svg2.append("path")
+					.datum(dataMileage)
+					.attr("fill", "none")
+					.attr("stroke", "steelblue")
+					.attr("stroke-width", 1.5)
+					.attr("d", d3.line()
+						.x(d => x(d.x) )
+						.y(d => y2(d.y) )
+						);
+				
+				svg2.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "end")
+					.attr("x", width/2)
+					.attr("y", height+30)
+					.text("Time (h)");
+
+				svg2.append("text")
+					.attr("class", "y label")
+					.attr("text-anchor", "end")
+					.attr("x", -height/2+20)
+					.attr("y", -30)
+					.attr("transform", "rotate(-90)")
+					.text("Mileage");
+			}
+
+			function delete_charts(){
+				svg1.selectAll("*").remove();
+				svg2.selectAll("*").remove();
+			}
+			function delete_chart3(){
+				svg3.selectAll("*").remove();
+
+			}
+
+			function highlightLine(){
+				var currentPlan = document.getElementById("plansbutton").value;
+				var currentBus = document.getElementById("bebbutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				switch (currentPlan){
+					case "Plan0":
+						routes = [2];
+						break;
+					case "Plan1":
+						routes = [33, 35, 39, 41, 45, 47, 240];
+						break;
+					case "Plan2":
+						routes = [2, 6, 11, 33, 35, 39, 41, 45, 47, 200, 205, 209, 227, 232, 240, 248, 500, 509, 513, 516, 520];
+						break;
+					case "Plan3":
+						routes = [2,6,9,11,17,21,33,35,39,41,45,47,62,72,200,201,205,209,213,217,218,220,227,232,240,248,307,313,320,354,461,470,471,500,509,513,516,519,520,526,606,608,612,616,625,626,627,640,650,664,665,807,830,838,850,862,920];
+						break;
+				}
+				var currentRoute = finalBEBdata[currentPlan][currentBus][currentTime]["Route_number"];
+				var auxRouteIndex = routes.findIndex((element) => element == currentRoute);
+				var currentLocation = finalBEBdata[currentPlan][currentBus][currentTime]["Location"];
+
+				var busNumbers = Object.keys( finalBEBdata[currentPlan] );
+				auxBusIndex = busNumbers.findIndex((element) => element == currentBus);
+				for (let k = 0 ; k < busNumbers.length ; k++){
+					// reset a los iconos:
+					// if (iconStatus[k] == 1){
+					eval( "busLoc_" + k + ".setIcon(busIcon).setZIndexOffset(0);" );
+					// }
+					// else{
+					// 	if (iconStatus[k] == 2){
+					// 		eval( "busLoc_" + k + ".setIcon(busInChargingStationIcon).setZIndexOffset(0);" );
+					// 	}
+					// 	else{
+					// 		eval( "busLoc_" + k + ".setIcon(chargingStationIcon).setZIndexOffset(0);" );
+					// 	}
+					// }
+
+				}
+				if (currentLocation == "On Route"){
+					// el bus esta en ruta, se refresca la linea
+					// for (let k = 0 ; k<routes.length ; k++){
+					// 	eval( "polyline_" + k + ".setStyle({ color: \"red\", opacity: 0.6, weight: 5 });" );
+					// }
+					// eval( "polyline_" + auxRouteIndex + ".setStyle({ color: \"blue\", opacity: 1, weight: 15 });" );
+					var currentZoom = map.getZoom();
+					var highlightedBusIcon = new L.Icon({
+						iconUrl: 'icons/bus-selected.png',
+						iconSize: [1.5*18.56*(1 + (currentZoom-12)/5), 1.5*20*(1 + (currentZoom-12)/5)],
+						iconAnchor: [1.5*9.28*(1 + (currentZoom-12)/5), 20*1.5*(1 + (currentZoom-12)/5)],
+						popupAnchor: [0, -20*1.5*(1 + (currentZoom-12)/5)]
+					});
+					eval( "busLoc_" + auxBusIndex + ".setIcon(highlightedBusIcon).setZIndexOffset(500);" );
+				} 
+				else {
+					// el bus esta en estacion. resaltar su icono
+
+					// encontrar el numero de la ruta en la lista de buses
+					var currentZoom = map.getZoom();
+					if (iconStatus[auxBusIndex] == 2){
+						var highlightedBusInCharging = new L.Icon({
+							iconUrl: 'icons/bus-in-station.png',
+							iconSize: [1.5*26*(1 + (currentZoom-12)/5), 1.5*44*(1 + (currentZoom-12)/5)],
+							iconAnchor: [1.5*13*(1 + (currentZoom-12)/5), 1.5*44*(1 + (currentZoom-12)/5)],
+							popupAnchor: [0, -44*1.5*(1 + (currentZoom-12)/5)]
+						});
+						eval( "busLoc_" + auxBusIndex + ".setIcon(highlightedBusIcon).setZIndexOffset(500);" );
+					}
+					if (iconStatus[auxBusIndex] == 3){
+						var highlightedCharging = new L.Icon({
+							iconUrl: 'icons/regular-station.png',
+							iconSize: [1.5*26*(1 + (currentZoom-12)/5), 44*1.5*(1 + (currentZoom-12)/5)],
+							iconAnchor: [13*1.5*(1 + (currentZoom-12)/5), 44*1.5*(1 + (currentZoom-12)/5)],
+							popupAnchor: [0, -44*1.5*(1 + (currentZoom-12)/5)]
+						});
+						eval( "busLoc_" + auxBusIndex + ".setIcon(highlightedBusIcon).setZIndexOffset(500);" );
+					}
+				}
+			}
+
+			function highlightStation(){
+				var currentPlan = document.getElementById("plansbutton").value;
+				var currentStation = document.getElementById("cebutton").value;
+				var currentTime = document.getElementById("myRange").value;
+				if (!currentTime.includes(".")){
+					currentTime = currentTime + ".0";
+				}
+				var stationNames = Object.keys( finalChdata[currentPlan] );
+				auxStationIndex = stationNames.findIndex((element) => element == currentStation);
+				// reset icons
+				for (let k = 0 ; k<stationNames.length ; k++){
+					eval( "stationLoc_" + k + ".setIcon(chargingStationIcon).setZIndexOffset(0);");
+				}
+				var currentZoom = map.getZoom();
+				var highlightedStation = new L.Icon({
+					iconUrl: 'icons/charging-station.png',
+					iconSize: [1.5*26*(1 + (currentZoom-12)/5), 44*1.5*(1 + (currentZoom-12)/5)],
+					iconAnchor: [13*1.5*(1 + (currentZoom-12)/5), 44*1.5*(1 + (currentZoom-12)/5)],
+					popupAnchor: [0, -44*1.5*(1 + (currentZoom-12)/5)]
+				});
+				eval( "stationLoc_" + auxStationIndex + ".setIcon(highlightedStation).setZIndexOffset(500);");
+			}
+
+	d3.select("#plansbutton").on("change", function(d){
+		selectedGroup = this.value
+		delete_beb()
+		delete_ce()
+		delete_table()
+		delete_map()
+		delete_charts()
+		delete_chart3()
+		updatelists(selectedGroup)
+		updatece(selectedGroup)
+		updatetable2(selectedGroup)
+		updatemap(selectedGroup)
+		updateCharts2()
+		updateChart3()
+		updateBatteryIcon()
+		updateCEIcon()
+		delete_chart3()
+		updateChart3()
+		locateBuses()
+		locateStations()
+	})  
+
+	d3.select("#bebbutton").on("change", function(d){
+		selectedBEB = this.value;
+		var currentPlan = document.getElementById("plansbutton").value;
+		delete_charts()
+		updateCharts2()
+		updateBatteryIcon()
+		highlightLine()
+		// a function is needed to reset highlighted lines
+	}) 
+	
+	d3.select("#cebutton").on("change", function(d){
+		selectedCE = this.value
+		delete_chart3()
+		updateChart3()
+		updateCEIcon()
+		highlightStation()
+	}) 
+
+	function updateCEIcon(){
+		var currentPlan = document.getElementById("plansbutton").value;
+		var currentcharg = document.getElementById("cebutton").value;
+		var currentTime = document.getElementById("myRange").value;
+		if (!currentTime.includes(".")){
+			currentTime = currentTime + ".0";
+		}
+		var aux1 = finalChdata[currentPlan][currentcharg][currentTime]["chargin_status"];
+
+		var bus_id = finalChdata[currentPlan][currentcharg][currentTime]["Bus"]
+		if (aux1 == "Free"){
+			// add the status of charging station
+			d3.select("#CEstat")
+				.text("Free") // text showed in the menu
+				.attr("class", "btn Free"); // 
+			// delete_beb_list()
+			d3.select("#bus_text")
+			    .style("font-weight", "bold")
+				.text(""); // text showed in the menu
+		;
+		}
+		else{
+			// add the status of charging station
+			d3.select("#CEstat")
+				.text("In Use") // text showed in the menu
+				.style("width", "60px")
+				.attr("class", "btn in_use"); //
+
+		
+
+			d3.select("#bus_text")
+			    .style("font-weight", "bold")
+				.text("Bus #:" + bus_id); // text showed in the menu
+
+
+				
+			
+			
+			
+		}
+	}
+
+		// d3.select("#plansbutton").on("change", function(d){
+		// 	selectedGroup = this.value
+		// 	delete_beb()
+		// 	delete_ce()
+		// 	delete_table()
+		// 	delete_map()
+		// 	delete_charts()
+		// 	updatelists(selectedGroup)
+		// 	updatece(selectedGroup)
+		// 	updatetable(selectedGroup)
+		// 	updatemap(selectedGroup)
+		// 	updateCharts2()
+		// 	updateBatteryIcon()
+
+		// 	delete_chart3()
+
+		// 	updateChart3()
+		// 	locateBuses()
+		// })  
+
+		// d3.select("#bebbutton").on("change", function(d){
+		// 	selectedBEB = this.value;
+		// 	var currentPlan = document.getElementById("plansbutton").value;
+		// 	delete_charts()
+		// 	updateCharts2()
+		// 	updateBatteryIcon()
+		// 	highlightLine()
+		// 	// a function is needed to reset highlighted lines
+		// }) 
+		
+		// d3.select("#cebutton").on("change", function(d){
+		// 	selectedCE = this.value
+		// 	var x = Math.random();
+		// 	if (x<0.2){
+		// 		document.getElementById("charging-icon").src = "icons/in-use.png";
+		// 	}
+		// 	else{
+		// 		document.getElementById("charging-icon").src = "icons/free.png";	
+		// 	}
+		// }) 
+
+	function convertNumToTime(number) {
+    // Check sign of given number
+    var sign = (number >= 0) ? 1 : -1;
+
+    // Set positive value of number of sign negative
+    number = number * sign;
+
+    // Separate the int from the decimal part
+    var hour = Math.floor(number)+ '';
+
+	if (hour.length < 2) {
+		console.log(hour)
+		hour = '0' + hour; 
+		console.log(hour)
+    }
+    var decpart = number - hour;
+
+    var min = 1 / 60;
+    // Round to nearest minute
+    decpart = min * Math.round(decpart / min);
+
+    var minute = Math.floor(decpart * 60) + '';
+
+    // Add padding if need
+    if (minute.length < 2) {
+    minute = '0' + minute; 
+    }
+
+    // Add Sign in final result
+    sign = sign == 1 ? '' : '-';
+
+    // Concate hours and minutes
+    time = hour + ':' + minute;
+
+    return time;
+}
+
+
+
+	d3.select("#myRange").on("change", function(d){
+		selectedValueRange = this.value;
+
+		if (!selectedValueRange.includes(".")){
+			selectedValueRange = selectedValueRange + ".00";
+		}
+
+
+
+
+
+		document.getElementById("timeBox").innerHTML = "Time: " + convertNumToTime(selectedValueRange);
+
+		document.getElementById("timeBox").style.fontWeight = "600"
+
+
+		
+
+		//alert(selectedValueRange)
+		var currentPlan = document.getElementById("plansbutton").value;
+		
+		
+		delete_table();
+		
+		delete_charts()
+		delete_chart3()
+
+		updateCharts2()
+		updateChart3()
+		updateBatteryIcon()
+		updateCEIcon()
+		updatetable2(currentPlan);
+		clearBuses()
+		locateBuses()
+		locateStations()
+	})
+
+	
+
+		function updateBatteryIcon(){
+			var currentPlan = document.getElementById("plansbutton").value;
+			var currentBus = document.getElementById("bebbutton").value;
+			var currentTime = document.getElementById("myRange").value;
+			if (!currentTime.includes(".")){
+				currentTime = currentTime + ".0";
+			}
+			var aux1 = finalBEBdata[currentPlan][currentBus][currentTime]["SoC"];
+
+			document.getElementById("battery-percentage").innerHTML = "SoC: " + aux1.toFixed(2) + "%";
+			if (aux1 >= 100){
+				document.getElementById("battery-icon").src = "icons/battery-full.png";
+			}
+			else{
+			
+				if (aux1 >= 80){
+					document.getElementById("battery-icon").src = "icons/battery-green.png";
+				}
+				else if (aux1 >= 40 && aux1 < 80) {
+					document.getElementById("battery-icon").src = "icons/battery-yellow.png";
+				}
+				else {
+					document.getElementById("battery-icon").src = "icons/battery-red.png";
+				}
+			}
+		}
+
+		  
+	});
+
+</script>
+
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script> -->
+
+</div>
+
+
+</body>
+
+
+</html>
+	

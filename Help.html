@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<link rel="stylesheet" href=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity=
+"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+		crossorigin="anonymous">
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity=
+"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous">
+	</script>
+	
+	<script src=
+"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity=
+"sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous">
+	</script>
+	
+	<script src=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity=
+"sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous">
+	</script>
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+	integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+	crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+	integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+	crossorigin=""></script>
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #474e5d;
+  color: white;
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.button:hover {
+  background-color: #555;
+}
+h2{color:white}
+
+p2{color:white}
+
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+
+  .column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+}
+
+.nav{background-color: rgba(191, 191, 191, 0.8);
+	padding: 5px 5px 5px 5px;
+
+}
+
+.nav > li > a:hover{
+    background-color:rgb(0, 0, 0);
+	color:rgb(255, 248, 248);
+
+}
+</style>
+</head>
+<body>
+  <div>
+		<ul class="nav nav-pills">
+
+      <li class="nav-item" style = " padding:0px 5px 0px 5px; ">
+				<a href="/Main.html" class="nav-link">Home</a>
+			</li>
+					
+			<li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/Help.html" class="nav-link">Help</a>
+			</li>
+
+			<li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/About.html" class="nav-link">About</a>
+			</li>
+
+			<!-- <li class="nav-item" style = " padding:0px 5px 0px 5px; ">
+				<a href="/Main.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">Home</a>
+			</li>
+					
+			<li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/Help.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">Help</a>
+			</li>
+			<li class="nav-item" style = " padding:0px 5px 0px 0px; ">
+				<a href="/About.html" class="nav-link" style="color:rgb(255, 248, 248); background-color: #049faa;">About</a>
+			</li> -->
+			
+		</ul>
+	</div>
+
+<div class="about-section">
+
+  <h1>Electric Bus Deployment Visualization</h1>
+  <table class="table">
+    <!-- <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead> -->
+    <tbody>
+      <tr>
+        <td><div>
+          <img src="icons/battery-full.png" alt="battery-full" style="width:30px">
+          <p2><br> Battery is full</p2></td>
+        <td><div>
+          <img src="icons/battery-green.png" alt="battery-green" style="width:30px">
+          <p2><br>Battery level is above 80%</p2></td></td>
+        <td><div>
+          <img src="icons/battery-yellow.png" alt="battery-yellow" style="width:30px">
+          <p2> <br>Battery level is above 40%</p2></td></td>
+        <td><div>
+          <img src="icons/battery-red.png" alt="battery-red" style="width:30px">
+          <p2> <br>Battery level is below 40%</p2></td></td>
+      </tr>
+      <tr>
+        <td><div>
+          <img src="icons/bus-icon.png" alt="bus-icon" style="width:30px">
+          <p2><br>Bus location icon</p2></td></td>
+        <td><div><img src="icons/bus-selected.png" alt="bus-selected" style="width:30px">
+          <p2><br>Highlighted icon for bus selected in BEB info panel</p2>
+          </td></td>
+        <td><div>
+          <img src="icons/charging-station.png" alt="charging-station" style="width:30px">
+          <p2> <br>Charging station icon</p2></td></td>
+        <td><div>
+          <img src="icons/regular-station.png" alt="regular-station" style="width:30px">
+          <p2><br>Non-charging station icon</p2></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <div>
+    <h2>User Interaction</h2>
+    <p>The user would select one of the plans (Plan1, Plan2, or Plan3) as desired. The BEB route information table, BEB information, and charging station lists are updated based on the plan. Next, the user can control the time using the time bar at the top of the page. As the user controls the bar, the information on the page on the map is updated based on the information provided by the client. The user also can search for specific information in the table, select a BEB to see its battery status and mileage. On the other hand, they can choose a particular charging station to observe the energy consumption of the charging station during the day.</p>
+  </div>
+  <div>
+    <h2>Data interpretation</h2>
+    <p>The interface provides several aspect of interpretation about data in each section</p>
+    <p>Inoformation on the map:</p>
+    <p>The map component displays the status on electric buses, routes, and charging stations on an interactive map where the user can easily visualize information.</p>
+    <p>BEB route information section:</p>
+    <p>This component illustrates the information of all the BEBs in each plan.
+      The table contains a list of the BEBs, state of charge (SOC), Mileage, Route and Status of each BEB.</p>
+    <p>BEB information section:</p>
+    <p>This section provide the SoC and Mileage of each BEB over the time. The user can select a BEB using a drop-down button to obverve this information.</p>
+    <p>Charging station section:</p>
+    <p>
+      This section visualizes the energy usage of each charging station ove time as well as the status of the station in the recent time.
+    </p>
+  </div>
+
+
+</div>
+
+
+</body>
+</html>
